@@ -89,10 +89,22 @@ class block_oerexchangeshares extends block_base {
 
         $html = html_writer::start_tag('ul', ['class' => 'list-unstyled oerexchangeshares-list']);
         foreach ($shares as $share) {
-            $url = new moodle_url('/local/oerexchange/resource.php', ['id' => $share->id]);
             $statuslabel = $statusstrings[$share->status] ?? s($share->status);
+            $title = format_string($share->title);
 
-            $line = html_writer::link($url, format_string($share->title));
+            // Only published resources have a viewable detail page. The
+            // catalogue's resource.php returns "not found" for hidden/removed
+            // resources to anyone lacking local/oerexchange:moderate, and it
+            // makes no exception for the resource's own creator — which is
+            // exactly who sees this block. Linking those titles would be a
+            // dead end, so render non-published titles as plain text.
+            if ($share->status === 'published') {
+                $url = new moodle_url('/local/oerexchange/resource.php', ['id' => $share->id]);
+                $line = html_writer::link($url, $title);
+            } else {
+                $line = html_writer::span($title);
+            }
+
             $line .= html_writer::tag('span', $statuslabel, ['class' => 'badge bg-secondary ms-2']);
             $line .= html_writer::tag(
                 'span',
