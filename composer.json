@@ -1,0 +1,21 @@
+{
+    "name": "adamjenkins/moodle-block_oerexchangeshares",
+    "description": "Dashboard block showing the logged-in OER Exchange account's own shared resources: title, publish status, version count.",
+    "type": "moodle-block",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Adam Jenkins",
+            "email": "adam@wisecat.net"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/adamjenkins/moodle-block_oerexchangeshares/issues",
+        "source": "https://github.com/adamjenkins/moodle-block_oerexchangeshares"
+    },
+    "require": {
+        "moodle/moodle": ">=5.0 <5.3",
+        "moodle/composer-installer": "^1.0",
+        "adamjenkins/moodle-local_oerexchange": "*"
+    }
+}
