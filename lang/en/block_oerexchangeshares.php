@@ -30,6 +30,7 @@ $string['oerexchangeshares:myaddinstance'] = 'Add a new OER Exchange: your share
 $string['pluginname'] = 'OER Exchange: your shares';
 $string['privacy:metadata'] = 'The OER Exchange: your shares block only displays data already stored by local_oerexchange; it does not store any data of its own.';
 $string['status_hidden'] = 'Hidden';
+$string['status_pending'] = 'Pending validation';
 $string['status_published'] = 'Published';
 $string['status_removed'] = 'Removed';
 $string['versioncount'] = '{$a} version(s)';

@@ -68,7 +68,11 @@ class block_oerexchangeshares extends block_base {
         }
 
         $this->content = new stdClass();
-        $this->content->footer = '';
+        $this->content->footer = html_writer::link(
+            new moodle_url('/local/oerexchange/share_new.php'),
+            get_string('sharenewheading', 'local_oerexchange'),
+            ['class' => 'btn btn-sm btn-outline-primary']
+        );
 
         $shares = content_builder::get_shares_for_user((int) $USER->id, self::RESOURCE_LIMIT);
 
@@ -82,8 +86,9 @@ class block_oerexchangeshares extends block_base {
         }
 
         $statusstrings = [
-            'published' => get_string('status_published', 'block_oerexchangeshares'),
             'hidden' => get_string('status_hidden', 'block_oerexchangeshares'),
+            'pending' => get_string('status_pending', 'block_oerexchangeshares'),
+            'published' => get_string('status_published', 'block_oerexchangeshares'),
             'removed' => get_string('status_removed', 'block_oerexchangeshares'),
         ];
 
