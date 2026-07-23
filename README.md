@@ -7,11 +7,13 @@ navigate anywhere to see "what have I shared and how is it doing."
 
 ## What it does
 
-- Lists your own shares from the catalogue, most recent first: title
-  (linked to the full resource detail page), publish status
-  (published/hidden/removed), and how many versions have been uploaded.
+- Lists your own shares from the catalogue, most recent first: title, publish
+  status, and how many versions have been uploaded. Only a published title is
+  linked to its detail page — the catalogue returns "not found" for anything
+  else, even to the resource's own creator, so linking those would be a dead
+  end.
 - Shows a friendly message instead of a blank block if you haven't shared
-  anything yet.
+  anything yet, and links to sharing a new resource from its footer.
 - Read-only presentation layer: all data comes from the companion
   [`local_oerexchange`](https://github.com/adamjenkins/moodle-local_oerexchange)
   plugin, which this block depends on and cannot be installed without.
