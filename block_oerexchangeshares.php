@@ -85,8 +85,11 @@ class block_oerexchangeshares extends block_base {
             return $this->content;
         }
 
+        // No 'deleted' entry: the tombstone flow zeroes creatorid, so this
+        // creator-scoped list can never contain a deleted resource.
         $statusstrings = [
             'hidden' => get_string('status_hidden', 'block_oerexchangeshares'),
+            'modhidden' => get_string('status_modhidden', 'block_oerexchangeshares'),
             'pending' => get_string('status_pending', 'block_oerexchangeshares'),
             'published' => get_string('status_published', 'block_oerexchangeshares'),
             'removed' => get_string('status_removed', 'block_oerexchangeshares'),
@@ -95,20 +98,17 @@ class block_oerexchangeshares extends block_base {
         $html = html_writer::start_tag('ul', ['class' => 'list-unstyled oerexchangeshares-list']);
         foreach ($shares as $share) {
             $statuslabel = $statusstrings[$share->status] ?? s($share->status);
-            $title = format_string($share->title);
+            $title = format_string($share->title, true, ['context' => \core\context\system::instance()]);
 
-            // Only published resources have a viewable detail page. The
-            // catalogue's resource.php returns "not found" for hidden/removed
-            // resources to anyone lacking local/oerexchange:moderate, and it
-            // makes no exception for the resource's own creator — which is
-            // exactly who sees this block. Linking those titles would be a
-            // dead end, so render non-published titles as plain text.
-            if ($share->status === 'published') {
-                $url = new moodle_url('/local/oerexchange/resource.php', ['id' => $share->id]);
-                $line = html_writer::link($url, $title);
-            } else {
-                $line = html_writer::span($title);
-            }
+            // Always link the title: resource.php admits a resource's own
+            // creator for every status (user_can_view_resource() — "hiding
+            // your own resource must not lock you out of the only page that
+            // can unhide it"), and this block's audience IS the creator.
+            // An earlier revision rendered non-published titles unlinked on
+            // the false premise that the detail page 404s for them — that
+            // hid the only page carrying the author's own controls.
+            $url = new moodle_url('/local/oerexchange/resource.php', ['id' => $share->id]);
+            $line = html_writer::link($url, $title);
 
             $line .= html_writer::tag('span', $statuslabel, ['class' => 'badge bg-secondary ms-2']);
             $line .= html_writer::tag(

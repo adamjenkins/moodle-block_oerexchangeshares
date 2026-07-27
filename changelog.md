@@ -3,6 +3,33 @@
 All notable changes to this project are documented in this file, in
 [Keep a Changelog](https://keepachangelog.com/) format.
 
+## [0.1.1] - 2026-07-27
+
+### Fixed
+
+- Every share links to its detail page regardless of status. The old
+  behaviour (non-published titles unlinked) assumed the detail page 404s
+  for the creator; in fact `resource.php` admits a resource's own creator
+  for every status, and that page carries the author's own controls.
+- `modhidden` (moderator takedown) now renders as a translated label —
+  previously the raw machine token appeared, untranslated, in exactly the
+  case where the author most needs a comprehensible status.
+- Japanese pack: added the missing `status_pending` label.
+- Version counts exclude `failed` uploads, which never became a servable
+  version.
+- `$plugin->requires` corrected from Moodle 4.5 to 5.0 (2025041400).
+
+### Changed
+
+- Dropped the unjustified `RISK_SPAM | RISK_XSS` bitmask on `addinstance`.
+- Titles pass an explicit system context to `format_string()`.
+
+### Added
+
+- PHPUnit: all-statuses-linked, translated-labels, escaping (titles and
+  unknown statuses), footer share link, and failed-upload count tests;
+  `@covers` migrated to attributes. Behat asserts the footer link.
+
 ## [0.1.0] - 2026-07-19
 
 ### Added

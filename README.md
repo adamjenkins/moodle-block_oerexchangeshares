@@ -8,10 +8,11 @@ navigate anywhere to see "what have I shared and how is it doing."
 ## What it does
 
 - Lists your own shares from the catalogue, most recent first: title, publish
-  status, and how many versions have been uploaded. Only a published title is
-  linked to its detail page — the catalogue returns "not found" for anything
-  else, even to the resource's own creator, so linking those would be a dead
-  end.
+  status, and how many versions have been uploaded (failed uploads don't
+  count). Every title links to its detail page whatever its status — the
+  catalogue admits a resource's own creator even for hidden or taken-down
+  resources, and that page carries the author's own controls (unhide,
+  replace the file, delete).
 - Shows a friendly message instead of a blank block if you haven't shared
   anything yet, and links to sharing a new resource from its footer.
 - Read-only presentation layer: all data comes from the companion
