@@ -7,9 +7,10 @@ navigate anywhere to see "what have I shared and how is it doing."
 
 ## What it does
 
-- Lists your own shares from the catalogue, most recent first: title, publish
-  status, and how many versions have been uploaded (failed uploads don't
-  count). Every title links to its detail page whatever its status — the
+- Lists your own shares from the catalogue, most recent first: the
+  resource's cover-image thumbnail (a neutral panel of the same size where
+  there is no cover), title, publish status, and how many versions have been
+  uploaded (failed uploads don't count). Every title links to its detail page whatever its status — the
   catalogue admits a resource's own creator even for hidden or taken-down
   resources, and that page carries the author's own controls (unhide,
   replace the file, delete).

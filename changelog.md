@@ -3,6 +3,22 @@
 All notable changes to this project are documented in this file, in
 [Keep a Changelog](https://keepachangelog.com/) format.
 
+## [0.1.2] - 2026-07-27
+
+### Added
+
+- Each of your shared resources leads with its cover-image thumbnail
+  (`local_oerexchange\local\cover_image::listitem()`), with a neutral
+  equally sized panel where a resource has no cover so rows stay aligned.
+
+### Changed
+
+- Rows are laid out thumbnail-left, text-right. The thumbnail links to the
+  same resource page as the title but is hidden from assistive technology,
+  so it widens the click target without announcing the same destination
+  twice.
+- Thumbnail URLs for the whole block are resolved in one batch query.
+
 ## [0.1.1] - 2026-07-27
 
 ### Fixed

@@ -95,6 +95,9 @@ class block_oerexchangeshares extends block_base {
             'removed' => get_string('status_removed', 'block_oerexchangeshares'),
         ];
 
+        // One query for every thumbnail on show, not one per row.
+        $coverurls = \local_oerexchange\local\cover_image::urls_for(array_map(fn($s) => $s->id, $shares));
+
         $html = html_writer::start_tag('ul', ['class' => 'list-unstyled oerexchangeshares-list']);
         foreach ($shares as $share) {
             $statuslabel = $statusstrings[$share->status] ?? s($share->status);
@@ -117,7 +120,20 @@ class block_oerexchangeshares extends block_base {
                 ['class' => 'small text-muted ms-2']
             );
 
-            $html .= html_writer::tag('li', $line, ['class' => 'mb-2']);
+            // Thumbnail left, title/status/version count right. Hidden from
+            // assistive tech (the title link beside it says the same thing)
+            // but still a click target.
+            $thumb = html_writer::link(
+                $url,
+                \local_oerexchange\local\cover_image::listitem($coverurls[$share->id] ?? null),
+                ['tabindex' => '-1', 'aria-hidden' => 'true', 'class' => 'flex-shrink-0']
+            );
+
+            $html .= html_writer::tag(
+                'li',
+                $thumb . html_writer::div($line, 'oerexchangeshares-text flex-grow-1', ['style' => 'min-width:0;']),
+                ['class' => 'oerexchangeshares-item d-flex gap-2 align-items-start mb-3']
+            );
         }
         $html .= html_writer::end_tag('ul');
 
