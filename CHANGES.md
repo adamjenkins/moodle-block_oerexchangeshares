@@ -1,6 +1,11 @@
-# Release notes — 0.1.0
+# Release notes — 0.1.1
 
-Initial alpha release: Dashboard block showing the logged-in OER Exchange
-account's own shared resources — title (linked to the catalogue detail
-page), publish status, and version count — with a friendly empty state
-when nothing has been shared yet.
+Review-round fixes. Every share now links to its detail page whatever its
+status — the previous "only published titles are linked" behaviour rested on
+a false premise (the catalogue admits a resource's own creator for every
+status), and it hid exactly the page carrying the author's own unhide /
+replace / delete controls from the one audience this block serves. A
+moderator takedown now shows a translated "Hidden by moderator" label
+instead of the raw machine token, the Japanese pack gains its missing
+"Pending validation" label, failed uploads no longer inflate the version
+count, and the installation floor is corrected to Moodle 5.0.

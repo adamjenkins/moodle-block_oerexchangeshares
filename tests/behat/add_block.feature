@@ -10,3 +10,4 @@ Feature: Add the OER Exchange your shares block to the Dashboard
     And I turn editing mode on
     When I add the "OER Exchange: your shares" block
     Then I should see "You haven't shared anything to the OER Exchange yet." in the "OER Exchange: your shares" "block"
+    And "Share a new resource" "link" should exist in the "OER Exchange: your shares" "block"

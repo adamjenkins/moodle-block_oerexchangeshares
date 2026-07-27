@@ -17,15 +17,15 @@
 namespace block_oerexchangeshares;
 
 /**
- * Tests for the block's rendered output (get_content): only published
- * resources are linked, since the catalogue detail page is not viewable
- * for hidden/removed resources by their own creator.
+ * Tests for the block's rendered output (get_content): every share links to
+ * its detail page (the catalogue admits a resource's own creator for every
+ * status), statuses render as translated labels, and output is escaped.
  *
  * @package    block_oerexchangeshares
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \block_oerexchangeshares
  */
+#[\PHPUnit\Framework\Attributes\CoversClass(\block_oerexchangeshares::class)]
 final class render_test extends \advanced_testcase {
     /**
      * Insert a fake local_oerexchange_resources row.
@@ -59,32 +59,89 @@ final class render_test extends \advanced_testcase {
     }
 
     /**
-     * Published resources link to the catalogue detail page; hidden and
-     * removed resources are shown as plain text (no link), because
-     * resource.php returns "not found" for them to their own creator.
+     * Every share links to its detail page whatever its status:
+     * resource.php admits the resource's own creator for every status
+     * (that page carries the author's own unhide/delete controls), and the
+     * creator is exactly who sees this block.
      */
-    public function test_only_published_resources_are_linked(): void {
+    public function test_every_share_is_linked_regardless_of_status(): void {
         $this->resetAfterTest();
 
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
 
-        $publishedid = $this->create_resource((int) $user->id, 'Published resource', 'published');
-        $hiddenid = $this->create_resource((int) $user->id, 'Hidden resource', 'hidden');
-        $removedid = $this->create_resource((int) $user->id, 'Removed resource', 'removed');
+        $ids = [
+            $this->create_resource((int) $user->id, 'Published resource', 'published'),
+            $this->create_resource((int) $user->id, 'Hidden resource', 'hidden'),
+            $this->create_resource((int) $user->id, 'Removed resource', 'removed'),
+            $this->create_resource((int) $user->id, 'Taken down resource', 'modhidden'),
+            $this->create_resource((int) $user->id, 'Pending resource', 'pending'),
+        ];
 
         $block = block_instance('oerexchangeshares');
         $content = $block->get_content();
 
-        // All three titles are shown.
-        $this->assertStringContainsString('Published resource', $content->text);
-        $this->assertStringContainsString('Hidden resource', $content->text);
-        $this->assertStringContainsString('Removed resource', $content->text);
+        foreach ($ids as $id) {
+            $this->assertStringContainsString('resource.php?id=' . $id, $content->text);
+        }
+    }
 
-        // Only the published one links to resource.php.
-        $this->assertStringContainsString('resource.php?id=' . $publishedid, $content->text);
-        $this->assertStringNotContainsString('resource.php?id=' . $hiddenid, $content->text);
-        $this->assertStringNotContainsString('resource.php?id=' . $removedid, $content->text);
+    /**
+     * Every status the creator can encounter renders as its translated
+     * label, never as the raw machine token.
+     */
+    public function test_statuses_render_as_translated_labels(): void {
+        $this->resetAfterTest();
+
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        foreach (['published', 'hidden', 'modhidden', 'pending', 'removed'] as $status) {
+            $this->create_resource((int) $user->id, "Resource {$status}", $status);
+        }
+
+        $content = block_instance('oerexchangeshares')->get_content();
+
+        foreach (['published', 'hidden', 'modhidden', 'pending', 'removed'] as $status) {
+            $this->assertStringContainsString(
+                get_string('status_' . $status, 'block_oerexchangeshares'),
+                $content->text
+            );
+        }
+        $this->assertStringNotContainsString('>modhidden<', $content->text);
+    }
+
+    /**
+     * A title containing markup is escaped on output, and an unknown
+     * status value falls back to an escaped raw token rather than markup.
+     */
+    public function test_titles_and_unknown_statuses_are_escaped(): void {
+        $this->resetAfterTest();
+
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        $this->create_resource((int) $user->id, '<script>alert(1)</script>Evil', 'published');
+        $this->create_resource((int) $user->id, 'Odd status', '<b>weird</b>');
+
+        $content = block_instance('oerexchangeshares')->get_content();
+
+        $this->assertStringNotContainsString('<script>alert(1)</script>', $content->text);
+        $this->assertStringNotContainsString('<b>weird</b>', $content->text);
+    }
+
+    /**
+     * The footer always offers sharing a new resource.
+     */
+    public function test_footer_links_to_sharing_a_new_resource(): void {
+        $this->resetAfterTest();
+
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        $content = block_instance('oerexchangeshares')->get_content();
+
+        $this->assertStringContainsString('share_new.php', $content->footer);
     }
 
     /**

@@ -53,10 +53,15 @@ class content_builder {
 
         $ids = array_keys($resources);
         [$insql, $inparams] = $DB->get_in_or_equal($ids);
+        // Counted: versions that are being served ('ready'), were served
+        // ('superseded' history) or are on their way ('parsing'). A 'failed'
+        // upload never became a version in any user-meaningful sense —
+        // counting it showed "1 version(s)" on a resource that has nothing
+        // servable at all.
         $counts = $DB->get_records_sql(
             "SELECT resourceid, COUNT(id) AS versioncount
                FROM {local_oerexchange_versions}
-              WHERE resourceid $insql
+              WHERE resourceid $insql AND status <> 'failed'
            GROUP BY resourceid",
             $inparams
         );

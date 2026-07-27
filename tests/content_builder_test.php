@@ -25,8 +25,8 @@ use block_oerexchangeshares\local\content_builder;
  * @package    block_oerexchangeshares
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \block_oerexchangeshares\local\content_builder
  */
+#[\PHPUnit\Framework\Attributes\CoversClass(content_builder::class)]
 final class content_builder_test extends \advanced_testcase {
     /**
      * Insert a fake local_oerexchange_resources row, matching the field set
@@ -65,9 +65,10 @@ final class content_builder_test extends \advanced_testcase {
      * Insert a fake local_oerexchange_versions row.
      *
      * @param int $resourceid
+     * @param string $status version status, e.g. 'ready' or 'failed'
      * @return int the new version id
      */
-    protected function create_version(int $resourceid): int {
+    protected function create_version(int $resourceid, string $status = 'ready'): int {
         global $DB;
 
         return $DB->insert_record('local_oerexchange_versions', (object) [
@@ -80,7 +81,7 @@ final class content_builder_test extends \advanced_testcase {
             'backupversion' => '2026071800',
             'structurejson' => null,
             'requiredplugins' => null,
-            'status' => 'ready',
+            'status' => $status,
             'parseerror' => null,
             'timecreated' => time(),
         ]);
@@ -163,6 +164,26 @@ final class content_builder_test extends \advanced_testcase {
 
         $this->assertSame(2, $byid[$resourceid1]->versioncount);
         $this->assertSame(0, $byid[$resourceid2]->versioncount);
+    }
+
+    /**
+     * A failed upload never became a version in any user-meaningful sense:
+     * counting it showed "1 version(s)" on a resource with nothing
+     * servable at all.
+     */
+    public function test_failed_uploads_do_not_count_as_versions(): void {
+        $this->resetAfterTest();
+
+        $user = $this->getDataGenerator()->create_user();
+
+        $resourceid = $this->create_resource((int) $user->id, 'Only a failed upload', time());
+        $this->create_version($resourceid, 'failed');
+        $this->create_version($resourceid, 'ready');
+        $this->create_version($resourceid, 'superseded');
+
+        $shares = content_builder::get_shares_for_user((int) $user->id);
+
+        $this->assertSame(2, $shares[0]->versioncount, 'ready + superseded count; failed must not');
     }
 
     public function test_status_is_returned_verbatim(): void {
