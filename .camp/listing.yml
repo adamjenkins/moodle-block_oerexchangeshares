@@ -1,0 +1,31 @@
+# camp listing manifest — descriptive content for your plugin's page.
+# Edit freely and commit; camp ingests this file at each tagged release.
+# Schema: https://camp-registry.org/schema/listing.schema.json
+name: "OER Exchange: your shares"
+summary: "A Moodle Dashboard block for the OER Exchange platform, showing the logged-in account's own shared resources and how each of them is doing."
+description: |
+  Answers "what have I shared, and how is it doing" without navigating
+  anywhere.
+
+  - Lists your own shares from the catalogue, most recent first: the resource's
+    cover-image thumbnail (a neutral panel of the same size where there is no
+    cover), the title, the publish status, and how many versions have been
+    uploaded, not counting failed uploads.
+  - Every title links to its detail page whatever its status. The catalogue
+    admits a resource's own creator even to hidden or taken-down resources, and
+    that page carries the author's own controls: unhide, replace the file,
+    delete.
+  - Shows a friendly message rather than a blank block if you have not shared
+    anything yet, and links to sharing a new resource from its footer.
+
+  A read-only presentation layer: all data comes from the companion
+  `local_oerexchange` plugin, which this block depends on and cannot be
+  installed without.
+labels:
+  - fully-free
+links:
+  docs: https://github.com/adamjenkins/moodle-block_oerexchangeshares#readme
+  issues: https://github.com/adamjenkins/moodle-block_oerexchangeshares/issues
+# screenshots:
+#   - path: .camp/screenshots/overview.png
+#     caption: Main view
