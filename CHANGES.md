@@ -1,7 +1,11 @@
-# Release notes — 0.1.2
+# Release notes — 1.0.0
 
-Each resource in the block now leads with its cover-image thumbnail. Rows
-are laid out thumbnail-left, text-right, and a resource with no cover gets
-an equally sized neutral panel rather than no thumbnail at all, so the list
-keeps its alignment either way. Thumbnail URLs for the whole block are
-resolved in a single query.
+The first stable release. The block is declared `MATURITY_STABLE`.
+
+There is **no functional change** since 0.1.2. This release marks the OER
+Exchange suite's first stable version, which all seven plugins take together
+so that a site never has to reason about a stable plugin depending on an alpha
+one. The block's list of your own shares — cover thumbnail, title linked
+whatever its status, publish status including a labelled takedown, and the
+count of real uploaded versions — is unchanged, as is its footer link to share
+something new.
