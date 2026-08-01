@@ -131,6 +131,44 @@ final class render_test extends \advanced_testcase {
     }
 
     /**
+     * Regression guard for the multilang-rendering bug fixed across the
+     * Exchange blocks: this block's title sink
+     * (block_oerexchangeshares.php:104) must stay
+     * format_string($share->title, true, ['context' => system]) and never
+     * revert to s(), which would render a multilang-marked-up title as
+     * visible literal `<span lang="en" class="multilang">...` markup
+     * instead of collapsing it to the viewer's language.
+     *
+     * Enables the filter trio locally rather than relying on site config,
+     * and pins the double-escape guard (a title containing `&` must be
+     * escaped exactly once, not left raw and not turned into `&amp;amp;`).
+     */
+    public function test_titles_render_through_multilang_and_escape_ampersand_once(): void {
+        $this->resetAfterTest();
+        filter_set_global_state('multilang', TEXTFILTER_ON);
+        set_config('filterall', 1);
+        set_config('stringfilters', 'multilang');
+
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        $this->create_resource(
+            (int) $user->id,
+            '<span lang="en" class="multilang">Arts &amp; Crafts</span>'
+                . '<span lang="ja" class="multilang">工芸</span>',
+            'published'
+        );
+
+        $content = block_instance('oerexchangeshares')->get_content();
+
+        $this->assertStringContainsString('Arts &amp; Crafts', $content->text);
+        $this->assertStringNotContainsString('工芸', $content->text);
+        $this->assertStringNotContainsString('multilang', $content->text);
+        $this->assertStringNotContainsString('&amp;amp;', $content->text);
+        $this->assertSame(1, substr_count($content->text, '&amp;'));
+    }
+
+    /**
      * The footer always offers sharing a new resource.
      */
     public function test_footer_links_to_sharing_a_new_resource(): void {
