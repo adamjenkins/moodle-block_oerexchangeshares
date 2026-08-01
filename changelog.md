@@ -3,6 +3,18 @@
 All notable changes to this project are documented in this file, in
 [Keep a Changelog](https://keepachangelog.com/) format.
 
+## [1.0.2] - 2026-08-01
+
+### Added
+
+- Regression test pinning the block's title sink to `format_string()` with a
+  system context, so a multilang-marked-up title cannot regress to rendering
+  as literal markup — the bug each sibling Exchange block had and fixed. The
+  test enables the filter trio locally rather than depending on site config,
+  and also pins single-escaping of `&`. No change to shipped behaviour: the
+  sink has used `format_string()` since the first commit; nothing held it
+  there.
+
 ## [1.0.1] - 2026-07-29
 
 ### Changed
