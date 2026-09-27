@@ -22,7 +22,7 @@ navigate anywhere to see "what have I shared and how is it doing."
 
 ## Requirements
 
-- Moodle 5.0–5.2 (`$plugin->supported`).
+- Moodle 5.0–5.3 (`$plugin->supported`).
 - [`local_oerexchange`](https://github.com/adamjenkins/moodle-local_oerexchange)
   installed on the same site (declared via `$plugin->dependencies`).
 
