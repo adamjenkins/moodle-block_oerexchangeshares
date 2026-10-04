@@ -1,18 +1,10 @@
-# Release notes — 1.0.2
+# Release notes — 1.0.3
 
-No change to how the plugin behaves. This release adds a regression test that
-pins the block's resource-title rendering.
+Declare Moodle 5.3 support. The block now declares itself supported on
+Moodle 5.0 through 5.3. No code changes were needed for 5.3. Its
+`composer.json` now admits Moodle 5.3 too (`>=5.0 <5.4`), so the plugin can
+be installed with Composer on a 5.3 site.
 
-Titles in this block have always been passed through Moodle's text filters, so
-a title written with the multilang filter has always collapsed to the language
-the viewer is reading in rather than showing the raw markup — but nothing in
-the test suite held that in place. The sibling Exchange blocks each had exactly
-this bug and were fixed in their own releases; the new test makes sure the
-block that was already correct cannot quietly regress into it. It also pins the
-escaping, so a title containing `&` is escaped exactly once.
+The distribution ZIP now includes the plugin's `tests/` directory.
 
-The installable plugin code is unchanged from 1.0.1 apart from the version
-metadata.
-
-No database changes; no action required after upgrading beyond the usual
-`admin/cli/upgrade.php`.
+No database or capability changes. No action is required after upgrading.

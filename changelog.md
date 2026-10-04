@@ -3,7 +3,7 @@
 All notable changes to this project are documented in this file, in
 [Keep a Changelog](https://keepachangelog.com/) format.
 
-## [Unreleased]
+## [1.0.3] - 2026-10-04
 
 ### Changed
 
@@ -11,6 +11,7 @@ All notable changes to this project are documented in this file, in
   (was `[500, 502]`), with the matching `composer.json` constraint
   (`>=5.0 <5.4`) and README requirements line. Audited against the 5.3
   upgrade notes; no code changes were needed.
+- The distribution ZIP now includes `tests/` (no longer export-ignored).
 
 ## [1.0.2] - 2026-08-01
 
