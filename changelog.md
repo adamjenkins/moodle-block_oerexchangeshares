@@ -3,13 +3,17 @@
 All notable changes to this project are documented in this file, in
 [Keep a Changelog](https://keepachangelog.com/) format.
 
-## [Unreleased]
+## [1.0.4] - 2026-10-04
 
 ### Changed
 
 - The Japanese language pack (lang/ja) is no longer included: releases ship the English strings
   only, as the Moodle Plugins directory expects. Japanese is provided through Moodle's language
   packs.
+- `composer.json` uses a caret constraint for `moodle/moodle` (`^5.0`, was `>=5.0 <5.4`), so new
+  Moodle 5.x releases are not excluded; the floor stays the lowest supported branch.
+- CI tests `MOODLE_503_STABLE` (blocking) instead of moodle.git `main`, now that Moodle 5.3 is
+  released.
 
 ## [1.0.3] - 2026-10-04
 
