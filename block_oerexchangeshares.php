@@ -113,7 +113,7 @@ class block_oerexchangeshares extends block_base {
             $url = new moodle_url('/local/oerexchange/resource.php', ['id' => $share->id]);
             $line = html_writer::link($url, $title);
 
-            $line .= html_writer::tag('span', $statuslabel, ['class' => 'badge bg-secondary ms-2']);
+            $line .= html_writer::tag('span', $statuslabel, ['class' => 'badge text-bg-secondary ms-2']);
             $line .= html_writer::tag(
                 'span',
                 get_string('versioncount', 'block_oerexchangeshares', $share->versioncount),
