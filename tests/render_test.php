@@ -193,7 +193,8 @@ final class render_test extends \advanced_testcase {
             'local/oerexchange:share',
             CAP_PROHIBIT,
             (int) $CFG->defaultuserroleid,
-            \context_system::instance()->id
+            \context_system::instance()->id,
+            true
         );
         accesslib_clear_all_caches_for_unit_testing();
         $this->setUser($this->getDataGenerator()->create_user());
