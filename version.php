@@ -39,4 +39,5 @@ $plugin->maturity  = MATURITY_STABLE;
 // block types, so the installer dependency check is the real enforcement
 // mechanism (see dev-docs/oer-platform/BLOCKS-DESIGN.md, "Why not
 // subplugins").
-$plugin->dependencies = ['local_oerexchange' => ANY_VERSION];
+// 2026110600 is the build that declares local/oerexchange:share, which the footer checks.
+$plugin->dependencies = ['local_oerexchange' => 2026110600];

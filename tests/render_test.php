@@ -169,7 +169,7 @@ final class render_test extends \advanced_testcase {
     }
 
     /**
-     * The footer always offers sharing a new resource.
+     * The footer offers sharing a new resource to a user who may share.
      */
     public function test_footer_links_to_sharing_a_new_resource(): void {
         $this->resetAfterTest();
@@ -180,6 +180,27 @@ final class render_test extends \advanced_testcase {
         $content = block_instance('oerexchangeshares')->get_content();
 
         $this->assertStringContainsString('share_new.php', $content->footer);
+    }
+
+    /**
+     * The footer does not link to a page the user would be refused.
+     */
+    public function test_footer_omits_sharing_without_the_capability(): void {
+        global $CFG;
+        $this->resetAfterTest();
+
+        assign_capability(
+            'local/oerexchange:share',
+            CAP_PROHIBIT,
+            (int) $CFG->defaultuserroleid,
+            \context_system::instance()->id
+        );
+        accesslib_clear_all_caches_for_unit_testing();
+        $this->setUser($this->getDataGenerator()->create_user());
+
+        $content = block_instance('oerexchangeshares')->get_content();
+
+        $this->assertSame('', $content->footer);
     }
 
     /**

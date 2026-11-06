@@ -68,11 +68,14 @@ class block_oerexchangeshares extends block_base {
         }
 
         $this->content = new stdClass();
-        $this->content->footer = html_writer::link(
-            new moodle_url('/local/oerexchange/share_new.php'),
-            get_string('sharenewheading', 'local_oerexchange'),
-            ['class' => 'btn btn-sm btn-outline-primary']
-        );
+        $this->content->footer = '';
+        if (has_capability('local/oerexchange:share', context_system::instance())) {
+            $this->content->footer = html_writer::link(
+                new moodle_url('/local/oerexchange/share_new.php'),
+                get_string('sharenewheading', 'local_oerexchange'),
+                ['class' => 'btn btn-sm btn-outline-primary']
+            );
+        }
 
         $shares = content_builder::get_shares_for_user((int) $USER->id, self::RESOURCE_LIMIT);
 
