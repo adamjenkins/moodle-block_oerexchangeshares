@@ -1,6 +1,7 @@
-# Release notes — 1.0.6
+# Release notes — 1.0.7
 
-- CI now also tests Moodle 5.1 (`MOODLE_501_STABLE`), which the plugin has always declared
-  supported.
+- The "Share a new resource" link appears only for users who hold the new
+  `local/oerexchange:share` capability, so nobody is sent to a page that would refuse them.
+  Requires local_oerexchange 1.2.4.
 
-No code, database or capability changes.
+No database or capability changes in this block.

@@ -3,6 +3,13 @@
 All notable changes to this project are documented in this file, in
 [Keep a Changelog](https://keepachangelog.com/) format.
 
+## [1.0.7] - 2026-11-06
+
+### Changed
+
+- The footer's link to the share page appears only for users holding
+  `local/oerexchange:share`. Requires local_oerexchange 1.2.4.
+
 ## [1.0.6] - 2026-10-29
 
 ### Changed
